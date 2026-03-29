@@ -17,17 +17,34 @@ Replace this paragraph with your own summary of what your version does.
 
 ## How The System Works
 
-Explain your design in plain language.
+Real-word recommendation systems like Spotify work by using both collaborative filtering and content-based filtering. This version
+prioritizes content-based filtering; it scores each song by how closely its features match a single user's taste profile. It prioritizes energy and acousticness, supported by genre and mood as categorical filters. The result is a transparent, math-driven recommender where every recommendation can be explained by specific song attributes — simpler than what Spotify runs, but built on the same core idea.
 
-Some prompts to answer:
+Song features used:
+1. genre
+2. mood
+3. energy
+4. acousticness
 
-- What features does each `Song` use in your system
-  - For example: genre, mood, energy, tempo
-- What information does your `UserProfile` store
-- How does your `Recommender` compute a score for each song
-- How do you choose which songs to recommend
+UserProfile stores:
+- favorite_genre: str — the genre the user prefers
+- favorite_mood: str — the mood the user prefers
+- target_energy: float — the energy level the user wants
+- likes_acoustic: bool — whether the user prefers acoustic sound
 
-You can include a simple diagram or bullet list if helpful.
+How a score is computed for each song:
+- genre_score = 1.0 if song.genre matches user.favorite_genre else 0.0
+- mood_score = 1.0 if song.mood matches user.favorite_mood else 0.0
+- energy_score = 1.0 - |song.energy - user.target_energy|
+- acoustic_score = 1.0 - |song.acousticness - target|
+
+- total = (genre_score × 1.0) + (mood_score × 0.5) + (energy_score × 1.5) + (acoustic_score × 1.2)
+
+How songs are chosen:
+
+Every song in the catalog is scored, then sorted from highest to lowest, and the top k songs are returned as recommendations.
+
+Score all songs → Sort by score (highest first) → Return top k
 
 ---
 
