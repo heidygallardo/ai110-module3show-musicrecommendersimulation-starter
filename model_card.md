@@ -2,22 +2,17 @@
 
 ## 1. Model Name  
 
-
-Give your model a short, descriptive name.  
-Example: **VibeFinder 1.0**  
+CloseEnough AI 1.0
 
 ---
 
 ## 2. Intended Use  
 
-Describe what your recommender is designed to do and who it is for. 
+CloseEnough AI 1.0 is a content-based music recommender designed to generate song recommendations based on a user’s stated preferences, including genre, mood, energy level, and acousticness. It ranks songs by how closely they match these features and returns the top results along with explanations for why they were recommended.
 
-Prompts:  
+The system assumes that users have clear and consistent preferences that can be captured through a small set of features. It also assumes that similarity between songs and user preferences can be measured using simple rules and weighted scoring, rather than complex behavioral data or listening history.
 
-- What kind of recommendations does it generate  
-- What assumptions does it make about the user  
-- Is this for real users or classroom exploration  
-
+This model is intended for classroom exploration and learning purposes. It is designed to help understand how recommendation systems work, how scoring logic affects outcomes, and how bias can emerge from feature selection and weighting. It is not intended for real-world deployment or production use.
 ---
 
 ## 3. How the Model Works  
