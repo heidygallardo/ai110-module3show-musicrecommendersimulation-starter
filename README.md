@@ -60,6 +60,7 @@ Input (User Profile + songs.csv)
   → Return top k recommendations
   → Generate an explanation string per song
 ```
+### Example Output
 
 ![alt text](image.png)
 
