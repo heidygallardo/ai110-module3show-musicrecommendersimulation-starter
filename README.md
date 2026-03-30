@@ -61,6 +61,9 @@ Input (User Profile + songs.csv)
   → Generate an explanation string per song
 ```
 
+![alt text](image.png)
+
+
 ### Potential Biases
 - Genre dominance: At 0.40, a genre match is worth more than mood and acousticness combined. Users whose favorite genre is underrepresented in the catalog (e.g. only 1 reggae song) will consistently get poor results regardless of how well other features match.
 

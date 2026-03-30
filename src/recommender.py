@@ -76,6 +76,46 @@ def load_songs(csv_path: str) -> List[Dict]:
             })
     return songs
 
+
+def score_song(user_prefs: Dict, song: Dict) -> Tuple[float, List[str]]:
+    """
+    Computes a weighted score for how well a song matches a user's preferences.
+    Returns the total score and a list of reasons explaining it.
+    """
+    total_score = 0.0
+    reasons = []
+
+    # --- Genre (weight: 0.40) ---
+    genre_score = 1.0 if song["genre"] == user_prefs["favorite_genre"] else 0.0
+    total_score += 0.40 * genre_score
+    if genre_score:
+        reasons.append("genre match (+0.40)")
+
+    # --- Mood (weight: 0.25) ---
+    mood_score = 1.0 if song["mood"] == user_prefs["favorite_mood"] else 0.0
+    total_score += 0.25 * mood_score
+    if mood_score:
+        reasons.append("mood match (+0.25)")
+
+    # --- Energy (weight: 0.25) ---
+    # closeness: 1.0 = perfect match, 0.0 = furthest apart
+    energy_score = max(0.0, 1.0 - abs(song["energy"] - user_prefs["target_energy"]))
+    energy_contribution = round(0.25 * energy_score, 4)
+    total_score += energy_contribution
+    reasons.append(f"energy close to target (+{energy_contribution})")
+
+    # --- Acousticness (weight: 0.10) ---
+    if user_prefs["likes_acoustic"]:
+        acoustic_score = 1.0 if song["acousticness"] > 0.5 else 0.0
+    else:
+        acoustic_score = 1.0 if song["acousticness"] <= 0.5 else 0.0
+    total_score += 0.10 * acoustic_score
+    if acoustic_score:
+        reasons.append("matches acoustic preference (+0.10)")
+
+    return total_score, reasons
+
+
 def recommend_songs(user_prefs: Dict, songs: List[Dict], k: int = 5) -> List[Tuple[Dict, float, str]]:
     """
     Functional implementation of the recommendation logic.
@@ -83,4 +123,21 @@ def recommend_songs(user_prefs: Dict, songs: List[Dict], k: int = 5) -> List[Tup
     """
     # TODO: Implement scoring and ranking logic
     # Expected return format: (song_dict, score, explanation)
-    return []
+
+    
+    # Score every song by calling score_song on each one
+    # Build a list of (song, score, reasons) tuples
+    scored = []
+    for song in songs:
+        score, reasons = score_song(user_prefs, song)
+        scored.append((song, score, reasons))
+
+    # sorted() is used here instead of .sort() because:
+    #   - sorted() returns a NEW list, leaving the original songs list unchanged
+    #   - .sort() would mutate the original list in place, which is a side effect
+    #     we want to avoid in a function that only reads data
+    # reverse=True gives us descending order (highest score first)
+    ranked = sorted(scored, key=lambda x: x[1], reverse=True)
+
+    # Return only the top k results
+    return ranked[:k]
