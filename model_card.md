@@ -2,6 +2,7 @@
 
 ## 1. Model Name  
 
+
 Give your model a short, descriptive name.  
 Example: **VibeFinder 1.0**  
 
@@ -67,17 +68,6 @@ During my experiments I discovered that the system is heavily biased toward genr
 
 ## 7. Evaluation  
 
-How you checked whether the recommender behaved as expected. 
-
-Prompts:  
-
-- Which user profiles you tested  
-- What you looked for in the recommendations  
-- What surprised you  
-- Any simple tests or comparisons you ran  
-
-No need for numeric metrics unless you created some.
-
 I tested three difeferent user profiles to see how the recommender behaves. 
 
 The first profile was a "Happy Pop" listener, the second used "electronic" as genre which did not exist in the dataset, and the third had conflicting preferences since it wanted both very high energy and a sad mood. 
@@ -103,10 +93,13 @@ Prompts:
 
 ## 9. Personal Reflection  
 
-A few sentences about your experience.  
+Through this project, I learned that recommender systems especially those using content-based filtering can easily develop bias depending on how features are weighted. I also realized that the choice of features and how they are scored directly shape the behavior of the system, therefore small design decisions can have a big impact on results.
 
-Prompts:  
+AI tools helped me plan and implement core logic for the recommender. It did well in helping me come up with edge cases I had not thought about when creating user profiles. 
 
-- What you learned about recommender systems  
-- Something unexpected or interesting you discovered  
-- How this changed the way you think about music recommendation apps  
+I did need to double-check AI's work when it provided implementations. At times 
+it would opt for list comprehension, making the code lack on readability. 
+
+What surprised was that even with a simple scoring system the recommendations still felt meaningul and relevant. The system was still able to produce results that matched the user's preferences most of the time. 
+
+This project changed the way I think about music recommendation systems because I now understand that they are not just “smart,” but are driven by the logic and assumptions behind them.
