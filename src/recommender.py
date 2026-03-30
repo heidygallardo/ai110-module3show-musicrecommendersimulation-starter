@@ -85,33 +85,33 @@ def score_song(user_prefs: Dict, song: Dict) -> Tuple[float, List[str]]:
     total_score = 0.0
     reasons = []
 
-    # --- Genre (weight: 0.40) ---
+    # --- Genre (weight: 0.53, renormalized from 0.40 after mood removed) ---
     genre_score = 1.0 if song["genre"] == user_prefs["favorite_genre"] else 0.0
-    total_score += 0.40 * genre_score
+    total_score += 0.53 * genre_score
     if genre_score:
-        reasons.append("genre match (+0.40)")
+        reasons.append("genre match (+0.53)")
 
-    # --- Mood (weight: 0.25) ---
-    mood_score = 1.0 if song["mood"] == user_prefs["favorite_mood"] else 0.0
-    total_score += 0.25 * mood_score
-    if mood_score:
-        reasons.append("mood match (+0.25)")
+    # --- Mood (weight: 0.25) --- TEMPORARILY DISABLED for sensitivity testing ---
+    # mood_score = 1.0 if song["mood"] == user_prefs["favorite_mood"] else 0.0
+    # total_score += 0.25 * mood_score
+    # if mood_score:
+    #     reasons.append("mood match (+0.25)")
 
-    # --- Energy (weight: 0.25) ---
+    # --- Energy (weight: 0.34, renormalized from 0.25 after mood removed) ---
     # closeness: 1.0 = perfect match, 0.0 = furthest apart
     energy_score = max(0.0, 1.0 - abs(song["energy"] - user_prefs["target_energy"]))
-    energy_contribution = round(0.25 * energy_score, 4)
+    energy_contribution = round(0.34 * energy_score, 4)
     total_score += energy_contribution
     reasons.append(f"energy close to target (+{energy_contribution})")
 
-    # --- Acousticness (weight: 0.10) ---
+    # --- Acousticness (weight: 0.13, renormalized from 0.10 after mood removed) ---
     if user_prefs["likes_acoustic"]:
         acoustic_score = 1.0 if song["acousticness"] > 0.5 else 0.0
     else:
         acoustic_score = 1.0 if song["acousticness"] <= 0.5 else 0.0
-    total_score += 0.10 * acoustic_score
+    total_score += 0.13 * acoustic_score
     if acoustic_score:
-        reasons.append("matches acoustic preference (+0.10)")
+        reasons.append("matches acoustic preference (+0.13)")
 
     return total_score, reasons
 

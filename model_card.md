@@ -61,14 +61,7 @@ Prompts:
 
 ## 6. Limitations and Bias 
 
-Where the system struggles or behaves unfairly. 
-
-Prompts:  
-
-- Features it does not consider  
-- Genres or moods that are underrepresented  
-- Cases where the system overfits to one preference  
-- Ways the scoring might unintentionally favor some users  
+During my experiments I discovered that the system is heavily biased toward genre due to its high weight and binary scoring. Since genre contributes a large portion of the total score, it often dominates the ranking before other features like energy or acousticness, are meaningfully considered. During testing, this caused songs with a genre match but weaker overall alignment to rank above songs that were better matches across multiple continuous features. In conclusion, the recommender can overlook more nuanced matches and produce less balanced recommendations.
 
 ---
 
@@ -84,6 +77,14 @@ Prompts:
 - Any simple tests or comparisons you ran  
 
 No need for numeric metrics unless you created some.
+
+I tested three difeferent user profiles to see how the recommender behaves. 
+
+The first profile was a "Happy Pop" listener, the second used "electronic" as genre which did not exist in the dataset, and the third had conflicting preferences since it wanted both very high energy and a sad mood. 
+
+One suprising result was that songs like "Gym Hero" kept appearing even for users who just wanted "Happy Pop". This happened because the system gives a lot of weight to genre and energy, so a high-energy pop song can rank highly even if the mood does not match. In the profile that had the missing genre, the system ignored the genre entirely and relied on other features. Overall making the recommendations less accurate. 
+
+These user profiles showed that the system can be overly influenced by certain features and does not always handle unusual or conflicting preferences as well.
 
 ---
 

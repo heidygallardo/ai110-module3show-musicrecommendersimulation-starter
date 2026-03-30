@@ -73,6 +73,16 @@ Input (User Profile + songs.csv)
 - Acousticness threshold — The > 0.5 cutoff treats 0.49 and 0.51 as opposites. Songs near the boundary are arbitrarily penalized or rewarded.s
 ---
 
+#### Profile 1 output
+![alt text](image-1.png)
+
+#### Profile 2 output
+![alt text](image-2.png)
+
+#### Profile 3 output
+![alt text](image-3.png)
+
+---
 ## Getting Started
 
 ### Setup
