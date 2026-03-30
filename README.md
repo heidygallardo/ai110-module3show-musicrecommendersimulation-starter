@@ -26,26 +26,47 @@ Song features used:
 3. energy
 4. acousticness
 
-UserProfile stores:
-- favorite_genre: str — the genre the user prefers
-- favorite_mood: str — the mood the user prefers
-- target_energy: float — the energy level the user wants
-- likes_acoustic: bool — whether the user prefers acoustic sound
+### User Profile
 
-How a score is computed for each song:
-- genre_score = 1.0 if song.genre matches user.favorite_genre else 0.0
-- mood_score = 1.0 if song.mood matches user.favorite_mood else 0.0
-- energy_score = 1.0 - |song.energy - user.target_energy|
-- acoustic_score = 1.0 - |song.acousticness - target|
+| Field | Type | Description |
+|---|---|---|
+| `favorite_genre` | str | The genre the user prefers |
+| `favorite_mood` | str | The mood the user prefers |
+| `target_energy` | float | The energy level the user wants (0.0 – 1.0) |
+| `likes_acoustic` | bool | Whether the user prefers acoustic sound |
 
-- total = (genre_score × 1.0) + (mood_score × 0.5) + (energy_score × 1.5) + (acoustic_score × 1.2)
+### Scoring Formula
 
-How songs are chosen:
+Each song receives a weighted score between 0.0 and 1.0:
 
-Every song in the catalog is scored, then sorted from highest to lowest, and the top k songs are returned as recommendations.
+```
+score = (0.40 × genre) + (0.25 × mood) + (0.25 × energy) + (0.10 × acousticness)
+```
 
-Score all songs → Sort by score (highest first) → Return top k
+| Feature | Weight | How It Is Calculated |
+|---|---|---|
+| Genre | 0.40 | `1.0` if `song.genre == user.favorite_genre`, else `0.0` |
+| Mood | 0.25 | `1.0` if `song.mood == user.favorite_mood`, else `0.0` |
+| Energy | 0.25 | `1.0 - abs(song.energy - user.target_energy)` |
+| Acousticness | 0.10 | `1.0` if acousticness preference aligns, else `0.0` |
 
+### Pipeline
+
+```
+Input (User Profile + songs.csv)
+  → Load all songs into Song objects
+  → Score every song using the weighted formula
+  → Sort by score descending
+  → Return top k recommendations
+  → Generate an explanation string per song
+```
+
+### Potential Biases
+- Genre dominance: At 0.40, a genre match is worth more than mood and acousticness combined. Users whose favorite genre is underrepresented in the catalog (e.g. only 1 reggae song) will consistently get poor results regardless of how well other features match.
+
+- Hard binary cutoffs: Genre and mood are exact string matches. "Indie pop" never matches "pop." "Relaxed" never matches "chill." Small catalog label inconsistencies will cause disproportionate score drops.
+
+- Acousticness threshold — The > 0.5 cutoff treats 0.49 and 0.51 as opposites. Songs near the boundary are arbitrarily penalized or rewarded.s
 ---
 
 ## Getting Started
