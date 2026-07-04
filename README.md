@@ -17,6 +17,13 @@ Replace this paragraph with your own summary of what your version does.
 
 ## How The System Works
 
+Real-world recommendation systems such as Spotify use both collaborative and content-based filtering. Collaborative filtering recommends based on patterns across users, while content-based filtering recommends based on the attributes of the items themselves. In this system, content-based filtering is prioritized. 
+
+Features used:
+
+- `Song`: genre, mood, energy, acousticness
+- `UserProfile`: favorite_genre, favorite_mood, target_energy, likes_acoustic
+
 Explain your design in plain language.
 
 Some prompts to answer:
