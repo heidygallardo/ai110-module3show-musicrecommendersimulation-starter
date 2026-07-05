@@ -97,11 +97,8 @@ You can add more tests in `tests/test_recommender.py`.
 Paste a sample of your recommender's output here as a text block so a reader can see what it produces:
 
 ```
-User profile: 
-- "favorite_genre": "lofi",
-- "favorite_mood": "chill", 
-- "target_energy": 0.35,
-- "likes_acoustic": True
+# User profile: favorite_genre=lofi, favorite_mood=chill, target_energy=0.35, likes_acoustic=True
+
 ================================================
   TOP RECOMMENDATIONS
 ================================================
@@ -141,19 +138,86 @@ User profile:
    Reasons:
      • energy close to target (0.37 vs 0.35)
      • acoustic (0.89)
+```
+```
 
 ================================================
+# User profile: favorite_genre=edm, favorite_mood=energetic, target_energy=0.95, likes_acoustic=False
 
+================================================
+  TOP RECOMMENDATIONS (edm / energetic)
+================================================
+
+1. Pulse Reactor  —  Kilo Frequency
+   Score: 7.00
+   Reasons:
+     • genre match (edm)
+     • mood match (energetic)
+     • energy close to target (0.95 vs 0.95)
+
+2. Gym Hero  —  Max Pulse
+   Score: 1.96
+   Reasons:
+     • energy close to target (0.93 vs 0.95)
+
+3. Ironclad  —  Hollow Throne
+   Score: 1.96
+   Reasons:
+     • energy close to target (0.97 vs 0.95)
+
+4. Storm Runner  —  Voltline
+   Score: 1.92
+   Reasons:
+     • energy close to target (0.91 vs 0.95)
+
+5. Sunrise City  —  Neon Echo
+   Score: 1.74
+   Reasons:
+     • energy close to target (0.82 vs 0.95)
+```
 ```
 
+================================================
+# User profile: favorite_genre=edm, favorite_mood=energetic, target_energy=0.10, likes_acoustic=True
+
+================================================
+  TOP RECOMMENDATIONS (edm but calm + acoustic)
+================================================
+
+1. Pulse Reactor  —  Kilo Frequency
+   Score: 5.30
+   Reasons:
+     • genre match (edm)
+     • mood match (energetic)
+     • energy close to target (0.95 vs 0.10)
+
+2. Spacewalk Thoughts  —  Orbit Bloom
+   Score: 2.64
+   Reasons:
+     • energy close to target (0.28 vs 0.10)
+     • acoustic (0.92)
+
+3. Moonlit Sonata Redux  —  Aria Vance
+   Score: 2.58
+   Reasons:
+     • energy close to target (0.31 vs 0.10)
+     • acoustic (0.95)
+
+4. Old Oak Road  —  The Timber Set
+   Score: 2.54
+   Reasons:
+     • energy close to target (0.33 vs 0.10)
+     • acoustic (0.90)
+
+5. Library Rain  —  Paper Lanterns
+   Score: 2.50
+   Reasons:
+     • energy close to target (0.35 vs 0.10)
+     • acoustic (0.86)
+
+================================================
 ```
-# e.g.:
-# User profile: genre=indie, mood=chill, energy=low
-# Recommendations:
-#   1. ...
-#   2. ...
-#   3. ...
-```
+
 
 **Screenshot or video** *(optional)*: <!-- Insert a screenshot or demo video link here -->
 
