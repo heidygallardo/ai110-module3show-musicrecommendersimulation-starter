@@ -24,6 +24,25 @@ Features used:
 - `Song`: genre, mood, energy, acousticness
 - `UserProfile`: favorite_genre, favorite_mood, target_energy, likes_acoustic
 
+### Algorithm Recipe (scoring)
+
+Each song earns points against the user profile, then songs are ranked by total.
+
+| Signal | Match rule | Points |
+|---|---|---|
+| Genre | `song.genre == favorite_genre` | **+3** |
+| Mood | `song.mood == favorite_mood` | **+2** |
+| Energy | closeness to `target_energy` | **+2 × (1 − \|diff\|)** |
+| Acoustic | `likes_acoustic and acousticness > 0.6` | **+1** |
+
+Genre outweighs mood (3 vs 2) because genre is the stronger taste signal; mood
+just refines ties within a genre. Energy is distance-based so near matches score
+well instead of needing an exact float match.
+
+```
+user_prefs + songs ─► score_song (per song) ─► sort desc ─► top k
+```
+
 Explain your design in plain language.
 
 Some prompts to answer:
@@ -76,6 +95,56 @@ You can add more tests in `tests/test_recommender.py`.
 ## Sample Recommendation Output
 
 Paste a sample of your recommender's output here as a text block so a reader can see what it produces:
+
+```
+User profile: 
+- "favorite_genre": "lofi",
+- "favorite_mood": "chill", 
+- "target_energy": 0.35,
+- "likes_acoustic": True
+================================================
+  TOP RECOMMENDATIONS
+================================================
+
+1. Library Rain  —  Paper Lanterns
+   Score: 8.00
+   Reasons:
+     • genre match (lofi)
+     • mood match (chill)
+     • energy close to target (0.35 vs 0.35)
+     • acoustic (0.86)
+
+2. Midnight Coding  —  LoRoom
+   Score: 7.86
+   Reasons:
+     • genre match (lofi)
+     • mood match (chill)
+     • energy close to target (0.42 vs 0.35)
+     • acoustic (0.71)
+
+3. Focus Flow  —  LoRoom
+   Score: 5.90
+   Reasons:
+     • genre match (lofi)
+     • energy close to target (0.40 vs 0.35)
+     • acoustic (0.78)
+
+4. Spacewalk Thoughts  —  Orbit Bloom
+   Score: 4.86
+   Reasons:
+     • mood match (chill)
+     • energy close to target (0.28 vs 0.35)
+     • acoustic (0.92)
+
+5. Coffee Shop Stories  —  Slow Stereo
+   Score: 2.96
+   Reasons:
+     • energy close to target (0.37 vs 0.35)
+     • acoustic (0.89)
+
+================================================
+
+```
 
 ```
 # e.g.:
